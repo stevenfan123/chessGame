@@ -5,13 +5,14 @@ class GameBoard {
 	public GamePiece[][] Board = new GamePiece[8][8];
 
 	public void display() {
-		char[] line = new char[16];
+		char[] line = new char[17];
 		for (int j = 7; j > -1; j--) {
-			System.out.println("---------------");
+			System.out.println("-----------------");
 			for (int i = 0; i < 8 ; i++) {
 				line[2*i+1] = this.Board[i][j].display();
 				line[2*i] = '|';
 			}
+			line[16] = '|';
 			String strLine = new String(line);
 			System.out.println(strLine);
 		}
