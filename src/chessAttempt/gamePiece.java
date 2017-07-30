@@ -42,7 +42,7 @@ abstract class GamePiece {
 		if (colour == "white") {
 			enemyColour = "black";
 		}
-		if (Board[selectedCoordinates.x][selectedCoordinates.y].getClass().equals("EmptySpace")) {
+		if (Board[selectedCoordinates.x][selectedCoordinates.y].getClass().getSimpleName().equals("EmptyPiece")) {
 			return "empty";
 		} else if (Board[selectedCoordinates.x][selectedCoordinates.y].team.equals(enemyColour)) {
 			return "enemy";
@@ -81,45 +81,29 @@ class Pawn extends GamePiece {
 	public Coordinates[] possibleMoves(GamePiece[][] Board, Coordinates userPicked) {
 		GamePiece Pawn = Board[userPicked.x][userPicked.y];
 		Coordinates[] possibleMoves = new Coordinates[4];
+		int yDirection = -1;
 		if (Pawn.team.equals("white")) {
-			if (userPicked.y == 1 & Board[userPicked.x][userPicked.y + 1].getClass().equals("EmptySpace") & Board[userPicked.x][userPicked.y + 2].getClass().equals("EmptySpace")) {
-				possibleMoves[3] = new Coordinates(userPicked.x, userPicked.y + 2); // 2 forward //
+			yDirection = 1;
+		}
+		if (userPicked.y == 1 & Board[userPicked.x][userPicked.y + 1].getClass().getSimpleName().equals("EmptyPiece") & Board[userPicked.x][userPicked.y + 2].getClass().getSimpleName().equals("EmptyPiece")) {
+			possibleMoves[3] = new Coordinates(userPicked.x, userPicked.y + 2); // 2 forward //
+		}
+		if (userPicked.y+yDirection > -1 & userPicked.y+yDirection < 8) {
+			if (Board[userPicked.x][userPicked.y + yDirection].getClass().getSimpleName().equals("EmptyPiece")) {
+				possibleMoves[0] = new Coordinates(userPicked.x, userPicked.y + yDirection); // 1 forward // 
 			}
-			if (userPicked.y != 7) {
-				if (Board[userPicked.x][userPicked.y + 1].getClass().equals("EmptySpace")) {
-					possibleMoves[0] = new Coordinates(userPicked.x, userPicked.y + 1); // 1 forward // 
-				}
-				if (userPicked.x > 0) {
-					if (Board[userPicked.x - 1][userPicked.y + 1].team.equals("black")) {
-						possibleMoves[1] = new Coordinates(userPicked.x - 1, userPicked.y + 1); // 1 left 1 forward //
-					}
-				}
-				if (userPicked.x < 7) {
-					if (Board[userPicked.x + 1][userPicked.y + 1].team.equals("black")) {
-						possibleMoves[2] = new Coordinates(userPicked.x + 1, userPicked.y + 1); // 1 right 1 forward //
-					}
+			if (userPicked.x > 0) {
+				if (Board[userPicked.x - 1][userPicked.y + yDirection].team.equals("black")) {
+					possibleMoves[1] = new Coordinates(userPicked.x - 1, userPicked.y + yDirection); // 1 left 1 forward //
 				}
 			}
-		} else {
-			if (userPicked.y == 6 & Board[userPicked.x][userPicked.y - 1].getClass().equals("EmptySpace") & Board[userPicked.x][userPicked.y - 2].getClass().equals("EmptySpace")) {
-				possibleMoves[3] = new Coordinates(userPicked.x, userPicked.y - 2); // 2 back //
-			}
-			if (userPicked.y != 0) {
-				if (Board[userPicked.x][userPicked.y - 1].getClass().equals("EmptySpace")) {
-					possibleMoves[0] = new Coordinates(userPicked.x, userPicked.y - 1); // 1 back //
-				}
-				if (userPicked.x > 0) {
-					if (Board[userPicked.x - 1][userPicked.y - 1].team.equals("white")) {
-						possibleMoves[1] = new Coordinates(userPicked.x - 1, userPicked.y - 1); // 1 left 1 back // 
-					}
-				}
-				if (userPicked.x < 7) {
-					if (Board[userPicked.x + 1][userPicked.y - 1].team.equals("white")) {
-						possibleMoves[2] = new Coordinates(userPicked.x + 1, userPicked.y - 1); // 1 right 1 back //
-					}
+			if (userPicked.x < 7) {
+				if (Board[userPicked.x + 1][userPicked.y + yDirection].team.equals("black")) {
+					possibleMoves[2] = new Coordinates(userPicked.x + 1, userPicked.y + yDirection); // 1 right 1 forward //
 				}
 			}
 		}
+
 		return (possibleMoves);
 	}	
 
@@ -293,6 +277,7 @@ class Queen extends GamePiece {
 	@Override
 	public Coordinates[] possibleMoves(GamePiece[][] Board, Coordinates userPicked) {
 		return null;
+
 	}
 	
 }
