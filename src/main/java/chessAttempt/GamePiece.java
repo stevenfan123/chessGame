@@ -126,7 +126,7 @@ class King extends GamePiece {
 		}
 		Set<Coordinates> permissibleMoves = new HashSet<>();
 		for (Coordinates move:possibleMoves) {
-			if (emptyOrEnemyOrFriendly(board[move.x][move.y],this.team).equals("friendly")) {
+			if (!emptyOrEnemyOrFriendly(board[move.x][move.y],this.team).equals("friendly")) {
 				permissibleMoves.add(move);
 			}
 		}

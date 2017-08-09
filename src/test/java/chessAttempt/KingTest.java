@@ -77,14 +77,14 @@ public class KingTest extends GamePieceTest{
 	public void friendliesInWay() {
 		// test case has friendlies at every possible move of the horse
 		gameBoard.board[2][2] = new King(WHITE, new Coordinates(2,2));
-		gameBoard.board[3][4] = new Pawn(WHITE, new Coordinates(3,4));
-		gameBoard.board[4][3] = new Pawn(WHITE, new Coordinates(4,3));
-		gameBoard.board[4][1] = new Pawn(WHITE, new Coordinates(4,1));
-		gameBoard.board[3][0] = new Pawn(WHITE, new Coordinates(3,0));
-		gameBoard.board[1][0] = new Pawn(WHITE, new Coordinates(1,0));
-		gameBoard.board[0][1] = new Pawn(WHITE, new Coordinates(0,1));
-		gameBoard.board[0][3] = new Pawn(WHITE, new Coordinates(0,3));
-		gameBoard.board[1][4] = new Pawn(WHITE, new Coordinates(1,4));
+		gameBoard.board[1][1] = new Pawn(WHITE, new Coordinates(1,1));
+		gameBoard.board[1][2] = new Pawn(WHITE, new Coordinates(1,2));
+		gameBoard.board[1][3] = new Pawn(WHITE, new Coordinates(1,3));
+		gameBoard.board[2][1] = new Pawn(WHITE, new Coordinates(2,1));
+		gameBoard.board[2][3] = new Pawn(WHITE, new Coordinates(2,3));
+		gameBoard.board[3][1] = new Pawn(WHITE, new Coordinates(3,1));
+		gameBoard.board[3][2] = new Pawn(WHITE, new Coordinates(3,2));
+		gameBoard.board[3][3] = new Pawn(WHITE, new Coordinates(3,3));
 		
 		Set<Coordinates> expectedPermissibleMoves1 = new HashSet<Coordinates>(); 
 		Set<Coordinates> actualPermissibleMoves1 = gameBoard.board[2][2].permissibleMoves(gameBoard.board);
@@ -94,26 +94,26 @@ public class KingTest extends GamePieceTest{
 	
 	@Test
 	public void enemiesInWay() {
-		// test case has friendlies at every possible move of the horse
+		// test case has enemies at every possible move of the king
 		gameBoard.board[2][2] = new King(WHITE, new Coordinates(2,2));
-		gameBoard.board[3][4] = new Pawn(BLACK, new Coordinates(3,4));
-		gameBoard.board[4][3] = new Pawn(BLACK, new Coordinates(4,3));
-		gameBoard.board[4][1] = new Pawn(BLACK, new Coordinates(4,1));
-		gameBoard.board[3][0] = new Pawn(BLACK, new Coordinates(3,0));
-		gameBoard.board[1][0] = new Pawn(BLACK, new Coordinates(1,0));
-		gameBoard.board[0][1] = new Pawn(BLACK, new Coordinates(0,1));
-		gameBoard.board[0][3] = new Pawn(BLACK, new Coordinates(0,3));
-		gameBoard.board[1][4] = new Pawn(BLACK, new Coordinates(1,4));
+		gameBoard.board[1][1] = new Pawn(BLACK, new Coordinates(1,1));
+		gameBoard.board[1][2] = new Pawn(BLACK, new Coordinates(1,2));
+		gameBoard.board[1][3] = new Pawn(BLACK, new Coordinates(1,3));
+		gameBoard.board[2][1] = new Pawn(BLACK, new Coordinates(2,1));
+		gameBoard.board[2][3] = new Pawn(BLACK, new Coordinates(2,3));
+		gameBoard.board[3][1] = new Pawn(BLACK, new Coordinates(3,1));
+		gameBoard.board[3][2] = new Pawn(BLACK, new Coordinates(3,2));
+		gameBoard.board[3][3] = new Pawn(BLACK, new Coordinates(3,3));
 		
 		Set<Coordinates> expectedPermissibleMoves1 = new HashSet<Coordinates>(); 
-		expectedPermissibleMoves1.add(new Coordinates(3,4));
-		expectedPermissibleMoves1.add(new Coordinates(4,3));
-		expectedPermissibleMoves1.add(new Coordinates(4,1));
-		expectedPermissibleMoves1.add(new Coordinates(3,0));
-		expectedPermissibleMoves1.add(new Coordinates(1,0));
-		expectedPermissibleMoves1.add(new Coordinates(0,1));
-		expectedPermissibleMoves1.add(new Coordinates(0,3));
-		expectedPermissibleMoves1.add(new Coordinates(1,4));
+		expectedPermissibleMoves1.add(new Coordinates(1,1));
+		expectedPermissibleMoves1.add(new Coordinates(1,2));
+		expectedPermissibleMoves1.add(new Coordinates(1,3));
+		expectedPermissibleMoves1.add(new Coordinates(2,1));
+		expectedPermissibleMoves1.add(new Coordinates(2,3));
+		expectedPermissibleMoves1.add(new Coordinates(3,1));
+		expectedPermissibleMoves1.add(new Coordinates(3,2));
+		expectedPermissibleMoves1.add(new Coordinates(3,3));
 
 		Set<Coordinates> actualPermissibleMoves1 = gameBoard.board[2][2].permissibleMoves(gameBoard.board);
 		assertEquals(expectedPermissibleMoves1, actualPermissibleMoves1);
@@ -122,19 +122,19 @@ public class KingTest extends GamePieceTest{
 
 	@Test
 	public void nothingInWay() {
-		// test case has friendlies at every possible move of the horse
+		// test case has nothing in way of king
 		gameBoard.board[2][2] = new King(WHITE, new Coordinates(2,2));
 
 		
 		Set<Coordinates> expectedPermissibleMoves1 = new HashSet<Coordinates>(); 
-		expectedPermissibleMoves1.add(new Coordinates(3,4));
-		expectedPermissibleMoves1.add(new Coordinates(4,3));
-		expectedPermissibleMoves1.add(new Coordinates(4,1));
-		expectedPermissibleMoves1.add(new Coordinates(3,0));
-		expectedPermissibleMoves1.add(new Coordinates(1,0));
-		expectedPermissibleMoves1.add(new Coordinates(0,1));
-		expectedPermissibleMoves1.add(new Coordinates(0,3));
-		expectedPermissibleMoves1.add(new Coordinates(1,4));
+		expectedPermissibleMoves1.add(new Coordinates(1,1));
+		expectedPermissibleMoves1.add(new Coordinates(1,2));
+		expectedPermissibleMoves1.add(new Coordinates(1,3));
+		expectedPermissibleMoves1.add(new Coordinates(2,1));
+		expectedPermissibleMoves1.add(new Coordinates(2,3));
+		expectedPermissibleMoves1.add(new Coordinates(3,1));
+		expectedPermissibleMoves1.add(new Coordinates(3,2));
+		expectedPermissibleMoves1.add(new Coordinates(3,3));
 
 		Set<Coordinates> actualPermissibleMoves1 = gameBoard.board[2][2].permissibleMoves(gameBoard.board);
 		assertEquals(expectedPermissibleMoves1, actualPermissibleMoves1);
