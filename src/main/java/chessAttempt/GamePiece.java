@@ -136,7 +136,7 @@ class King extends GamePiece {
 		return permissibleMoves;
 	}
 	
-	private boolean castlePermissible(GamePiece[][] board, Coordinates userPicked) {
+	public boolean castlePermissible(GamePiece[][] board, Coordinates userPicked) {
 		Coordinates castlePosition = new Coordinates(7,7);
 		if(this.team.equals(WHITE)) {
 			castlePosition = new Coordinates(7,0);
@@ -208,7 +208,20 @@ class Castle extends GamePiece {
 		permissibleMoves.addAll(permissibleMovesInDirection(board, this.coordinates, 1, 0));
 		permissibleMoves.addAll(permissibleMovesInDirection(board, this.coordinates, 0, -1));
 		permissibleMoves.addAll(permissibleMovesInDirection(board, this.coordinates, 0, 1));
+		if(castlePermissible(board,this.coordinates)){
+			permissibleMoves.add(this.coordinates.add(-3, 0));
+		}
 		return permissibleMoves;
+	}
+	
+	private boolean castlePermissible(GamePiece[][] board, Coordinates userPicked){
+		if(board[userPicked.x][userPicked.y].hasMoved == false){
+			GamePiece gamePiece = board[userPicked.x-3][userPicked.y];
+			if(gamePiece.getClass().getSimpleName().equals("King")){
+				return ((King) board[userPicked.x-3][userPicked.y]).castlePermissible(board,userPicked.add(-3, 0));
+			}
+		}
+		return false;
 	}
 	
 }

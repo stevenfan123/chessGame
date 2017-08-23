@@ -141,6 +141,56 @@ public class KingTest extends GamePieceTest{
 		
 	}
 
+	@Test
+	public void castling() {
+		// 1st test case has nothing in way of king and castle in correct positions
+		gameBoard.board[4][0] = new King(WHITE, new Coordinates(4,0));
+		gameBoard.board[7][0] = new Castle(WHITE, new Coordinates(7,0));
+		// 2nd test case has nothing in way of king and castle in correct positions
+		gameBoard.board[4][7] = new King(BLACK, new Coordinates(4,7));
+		gameBoard.board[7][7] = new Castle(BLACK, new Coordinates(7,7));
+		// 3rd test case has king and castle in the wrong positions
+		gameBoard.board[4][3] = new King(WHITE, new Coordinates(4,3));
+		gameBoard.board[4][3].hasMoved = true;
+		gameBoard.board[7][3] = new Castle(WHITE, new Coordinates(7,3));
+		gameBoard.board[7][3].hasMoved = true;
+		
+		Set<Coordinates> expectedPermissibleMoves1 = new HashSet<Coordinates>();
+		Set<Coordinates> expectedPermissibleMoves2 = new HashSet<Coordinates>();
+		Set<Coordinates> expectedPermissibleMoves3 = new HashSet<Coordinates>();
+		
+		expectedPermissibleMoves1.add(new Coordinates(3,0));
+		expectedPermissibleMoves1.add(new Coordinates(3,1));
+		expectedPermissibleMoves1.add(new Coordinates(4,1));
+		expectedPermissibleMoves1.add(new Coordinates(5,1));
+		expectedPermissibleMoves1.add(new Coordinates(5,0));
+		expectedPermissibleMoves1.add(new Coordinates(7,0));
 
+		expectedPermissibleMoves2.add(new Coordinates(3,7));
+		expectedPermissibleMoves2.add(new Coordinates(3,6));
+		expectedPermissibleMoves2.add(new Coordinates(4,6));
+		expectedPermissibleMoves2.add(new Coordinates(5,6));
+		expectedPermissibleMoves2.add(new Coordinates(5,7));
+		expectedPermissibleMoves2.add(new Coordinates(7,7));
+		
+		expectedPermissibleMoves3.add(new Coordinates(3,2));
+		expectedPermissibleMoves3.add(new Coordinates(3,3));
+		expectedPermissibleMoves3.add(new Coordinates(3,4));
+		expectedPermissibleMoves3.add(new Coordinates(4,4));
+		expectedPermissibleMoves3.add(new Coordinates(4,2));
+		expectedPermissibleMoves3.add(new Coordinates(5,4));
+		expectedPermissibleMoves3.add(new Coordinates(5,3));
+		expectedPermissibleMoves3.add(new Coordinates(5,2));
+
+
+		Set<Coordinates> actualPermissibleMoves1 = gameBoard.board[4][0].permissibleMoves(gameBoard.board);
+		Set<Coordinates> actualPermissibleMoves2 = gameBoard.board[4][7].permissibleMoves(gameBoard.board);
+		Set<Coordinates> actualPermissibleMoves3 = gameBoard.board[4][3].permissibleMoves(gameBoard.board);
+		
+		assertEquals(expectedPermissibleMoves1, actualPermissibleMoves1);
+		assertEquals(expectedPermissibleMoves2, actualPermissibleMoves2);
+		assertEquals(expectedPermissibleMoves3, actualPermissibleMoves3);
+		
+	}
 	 
 }
