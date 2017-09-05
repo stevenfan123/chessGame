@@ -1,9 +1,14 @@
 package chessAttempt;
 
 import static chessAttempt.Team.*;
-class GameBoard {
+
+import java.io.Serializable;
+import java.lang.reflect.Constructor;
+class GameBoard implements Serializable {
 
 	public GamePiece[][] board = new GamePiece[8][8];
+	public King whiteKing;
+	public King blackKing;
 
 	public void display() {
 		char[] line = new char[17];
@@ -50,11 +55,26 @@ class GameBoard {
 		this.board[5][7] = new Bishop(BLACK, new Coordinates(5,7));
 		this.board[3][7] = new Queen(BLACK, new Coordinates(3,7));
 		this.board[4][7] = new King(BLACK, new Coordinates(4,7));
+		this.whiteKing = (King) this.board[4][0];
+		this.blackKing = (King) this.board[4][7];
 	}
 
 	public String won() {
 		// TODO Auto-generated method stub
 		return "No";
+	}
+	public GameBoard(GameBoard another) throws Exception{
+		this.board = new GamePiece[8][8];
+		for(int i = 0; i < 8; i++){
+			for(int j = 0; j < 8; j++){
+				Class<?> clazz = another.board[i][j].getClass();
+		        Constructor<?> copyConstructor = clazz.getConstructor(clazz);
+		        this.board[i][j] = (GamePiece) copyConstructor.newInstance(another.board[i][j]);
+			}
+		}
+
+		this.whiteKing = new King(another.whiteKing);
+		this.blackKing = new King(another.blackKing);
 	}
 
 }

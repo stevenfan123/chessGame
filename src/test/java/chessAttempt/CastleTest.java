@@ -77,9 +77,9 @@ public class CastleTest extends GamePieceTest {
 
 		
 
-		Set<Coordinates> actualPermissibleMoves1 = gameBoard.board[2][2].permissibleMoves(gameBoard.board);
-		Set<Coordinates> actualPermissibleMoves2 = gameBoard.board[3][3].permissibleMoves(gameBoard.board);
-		Set<Coordinates> actualPermissibleMoves3 = gameBoard.board[4][4].permissibleMoves(gameBoard.board);
+		Set<Coordinates> actualPermissibleMoves1 = gameBoard.board[2][2].permissibleMoves(gameBoard);
+		Set<Coordinates> actualPermissibleMoves2 = gameBoard.board[3][3].permissibleMoves(gameBoard);
+		Set<Coordinates> actualPermissibleMoves3 = gameBoard.board[4][4].permissibleMoves(gameBoard);
 
 
 		assertEquals(expectedPermissibleMoves1, actualPermissibleMoves1);
@@ -124,9 +124,9 @@ public class CastleTest extends GamePieceTest {
 		expectedPermissibleMoves3.add(new Coordinates(6,3));
 
 
-		Set<Coordinates> actualPermissibleMoves1 = gameBoard.board[7][0].permissibleMoves(gameBoard.board);
-		Set<Coordinates> actualPermissibleMoves2 = gameBoard.board[7][7].permissibleMoves(gameBoard.board);
-		Set<Coordinates> actualPermissibleMoves3 = gameBoard.board[7][3].permissibleMoves(gameBoard.board);
+		Set<Coordinates> actualPermissibleMoves1 = gameBoard.board[7][0].permissibleMoves(gameBoard);
+		Set<Coordinates> actualPermissibleMoves2 = gameBoard.board[7][7].permissibleMoves(gameBoard);
+		Set<Coordinates> actualPermissibleMoves3 = gameBoard.board[7][3].permissibleMoves(gameBoard);
 		
 		assertEquals(expectedPermissibleMoves1, actualPermissibleMoves1);
 		assertEquals(expectedPermissibleMoves2, actualPermissibleMoves2);

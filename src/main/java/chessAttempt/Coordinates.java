@@ -1,6 +1,8 @@
 package chessAttempt;
 
-public class Coordinates {
+import java.io.Serializable;
+
+public class Coordinates implements Serializable {
 
 	public int x;
 	public int y;
@@ -8,6 +10,11 @@ public class Coordinates {
 	public Coordinates(int x, int y) {
 		this.x = x;
 		this.y = y;
+	}
+
+	public Coordinates(Coordinates anotherCoordinates) {
+		this.x = anotherCoordinates.x;
+		this.y = anotherCoordinates.y;
 	}
 
 	public void display() {

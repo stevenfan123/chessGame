@@ -1,16 +1,24 @@
 package chessAttempt;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import static chessAttempt.Team.*;
 
-abstract class GamePiece {
+abstract class GamePiece implements Serializable {
 	public final Team team;
 	protected Coordinates coordinates;
 	public GamePiece(Team team, Coordinates coordinates){
+	
 		this.team = team;
 		this.coordinates = coordinates;
 		this.hasMoved = false;
+	}
+	
+	public GamePiece(GamePiece copyPiece){
+		this.team = copyPiece.team;
+		this.coordinates = new Coordinates(copyPiece.coordinates);
+		this.hasMoved = copyPiece.hasMoved;
 	}
 	protected boolean hasMoved;
 
@@ -22,8 +30,32 @@ abstract class GamePiece {
 		}
 	}
 	
-	public abstract Set<Coordinates> permissibleMoves(GamePiece[][] board);
+	public abstract Set<Coordinates> permissibleMoves(GameBoard gameBoard, boolean considerCheck);
 	
+	protected static Set<Coordinates> refinePermissibleMoves(GameBoard gameBoard, Coordinates selectedPieceCoords, Set<Coordinates> permissibleMoves){
+		Set<Coordinates> refinedPermissibleMoves = new HashSet<>();
+		GameBoard gameBoardTemp = null;
+		Team currentTeam = gameBoard.board[selectedPieceCoords.x][selectedPieceCoords.y].team;
+		for(Coordinates permissibleMove:permissibleMoves){
+			try {
+				gameBoardTemp = (GameBoard) ObjectCloner.deepCopy(gameBoard);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			gameBoardTemp = ChessGame.makeMove(gameBoardTemp, selectedPieceCoords,permissibleMove);
+			if(currentTeam.equals(WHITE)){
+				if(!gameBoardTemp.whiteKing.inCheck(gameBoardTemp)){
+					refinedPermissibleMoves.add(permissibleMove);
+				}
+			} else{
+				if(!gameBoardTemp.blackKing.inCheck(gameBoardTemp)){
+					refinedPermissibleMoves.add(permissibleMove);
+				}
+			}		
+		}
+		return refinedPermissibleMoves;
+	}
 	protected static String emptyOrEnemyOrFriendly(GamePiece gamePiece, Team team) {
 		Team enemyTeam = WHITE;
 		if (team.equals(WHITE)) {
@@ -56,14 +88,22 @@ abstract class GamePiece {
 		}
 		return permissibleMoves;
 	}
+	protected static boolean checkIfWouldBeCheck(GamePiece[][] board, Team team){
+		return false;
+		
+	}
 }
 
 class Pawn extends GamePiece {
 	public Pawn(Team team, Coordinates coordinates) {
 		super(team, coordinates);
 	}
+	public Pawn(Pawn copyPawn){
+		super(copyPawn);
+	}
 	@Override
-	public Set<Coordinates> permissibleMoves(GamePiece[][] board) {
+	public Set<Coordinates> permissibleMoves(GameBoard gameBoard, boolean considerCheck) {
+		GamePiece[][] board = gameBoard.board;
 		Set<Coordinates> permissibleMoves = new HashSet<>();
 		int yDirection = -1;
 		if (this.team.equals(WHITE)) {
@@ -87,8 +127,11 @@ class Pawn extends GamePiece {
 				}
 			}
 		}
-
-		return (permissibleMoves);
+		if(considerCheck){
+			return refinePermissibleMoves(gameBoard,this.coordinates,permissibleMoves);
+		} else{
+			return permissibleMoves;
+		}
 	}	
 
 }
@@ -97,8 +140,12 @@ class King extends GamePiece {
 	public King(Team team, Coordinates coordinates) {
 		super(team, coordinates);
 	}
+	public King(King copyKing) {
+		super(copyKing);
+	}
 	@Override
-	public Set<Coordinates> permissibleMoves(GamePiece[][] board) {
+	public Set<Coordinates> permissibleMoves(GameBoard gameBoard, boolean considerCheck){
+		GamePiece[][] board = gameBoard.board;
 		Set<Coordinates> possibleMoves = new HashSet<>();
 		if (this.coordinates.x > 0) {
 			possibleMoves.add(coordinates.add(-1, 0)); // 1 left //
@@ -130,13 +177,17 @@ class King extends GamePiece {
 				permissibleMoves.add(move);
 			}
 		}
-		if(castlePermissible(board,this.coordinates)) {
+		if(castlePermissible(board)) {
 			permissibleMoves.add(coordinates.add(3, 0));
 		}
-		return permissibleMoves;
+		if(considerCheck){
+			return refinePermissibleMoves(gameBoard,this.coordinates,permissibleMoves);
+		} else{
+			return permissibleMoves;
+		}
 	}
 	
-	public boolean castlePermissible(GamePiece[][] board, Coordinates userPicked) {
+	public boolean castlePermissible(GamePiece[][] board) {
 		Coordinates castlePosition = new Coordinates(7,7);
 		if(this.team.equals(WHITE)) {
 			castlePosition = new Coordinates(7,0);
@@ -152,6 +203,38 @@ class King extends GamePiece {
 		}
 		return false;
 	}
+	
+	public boolean inCheck(GameBoard gameBoard){
+		GamePiece[][] board = gameBoard.board;
+		GamePiece[] arrayOfPieces = new GamePiece[]{new King(this.team,this.coordinates), new Castle(this.team,this.coordinates),new Bishop(this.team,this.coordinates),new Horse(this.team,this.coordinates),new Queen(this.team,this.coordinates),new Pawn(this.team,this.coordinates)} ;
+		for(GamePiece piece:arrayOfPieces){
+			piece.hasMoved = this.hasMoved;
+			board[this.coordinates.x][this.coordinates.y] = piece;
+			for(Coordinates permissibleMove:piece.permissibleMoves(gameBoard, false)){		
+				if(board[permissibleMove.x][permissibleMove.y].getClass().equals(piece.getClass()) & !board[permissibleMove.x][permissibleMove.y].team.equals(this.team)){
+					board[this.coordinates.x][this.coordinates.y] = this;
+					return true;
+				}
+			}
+		}
+//		try{
+//			if(this.team.equals(WHITE)){
+//				if((board[this.coordinates.x-1][this.coordinates.y+1].getClass().getSimpleName().equals("Pawn") & !board[this.coordinates.x-1][this.coordinates.y+1].team.equals(this.team )) |
+//						(board[this.coordinates.x+1][this.coordinates.y+1].getClass().getSimpleName().equals("Pawn") & !board[this.coordinates.x+1][this.coordinates.y+1].team.equals(this.team ))){
+//					return true;
+//				}
+//			} else{
+//				if((board[this.coordinates.x-1][this.coordinates.y-1].getClass().getSimpleName().equals("Pawn") & !board[this.coordinates.x-1][this.coordinates.y+1].team.equals(this.team )) |
+//						(board[this.coordinates.x+1][this.coordinates.y-1].getClass().getSimpleName().equals("Pawn") & !board[this.coordinates.x+1][this.coordinates.y+1].team.equals(this.team ))){
+//					return true;
+//				}
+//			}
+//		} catch(ArrayIndexOutOfBoundsException){
+//			
+//		}
+		board[this.coordinates.x][this.coordinates.y] = this;
+		return false;
+	}
 
 }
 
@@ -159,8 +242,12 @@ class Horse extends GamePiece {
 	public Horse(Team team, Coordinates coordinates) {
 		super(team, coordinates);
 	}
+	public Horse(Horse copyHorse) {
+		super(copyHorse);
+	}
 	@Override
-	public Set<Coordinates> permissibleMoves(GamePiece[][] board) {
+	public Set<Coordinates> permissibleMoves(GameBoard gameBoard, boolean considerCheck){
+		GamePiece[][] board = gameBoard.board;
 		Set<Coordinates> possibleMoves = new HashSet<>();
 		if (this.coordinates.x > 1 & this.coordinates.y > 0) {
 			possibleMoves.add(coordinates.add(-2, -1)); // 2 left 1 down //
@@ -192,7 +279,11 @@ class Horse extends GamePiece {
 					permissibleMoves.add(move);
 				}
 		}
-		return (permissibleMoves);
+		if(considerCheck){
+			return refinePermissibleMoves(gameBoard,this.coordinates,permissibleMoves);
+		} else{
+			return permissibleMoves;
+		}
 	}
 	
 }
@@ -201,8 +292,12 @@ class Castle extends GamePiece {
 	public Castle(Team team, Coordinates coordinates) {
 		super(team, coordinates);
 	}
+	public Castle(Castle copyCastle) {
+		super(copyCastle);
+	}
 	@Override
-	public Set<Coordinates> permissibleMoves(GamePiece[][] board) {
+	public Set<Coordinates> permissibleMoves(GameBoard gameBoard, boolean considerCheck) {
+		GamePiece[][] board = gameBoard.board;
 		Set<Coordinates> permissibleMoves = new HashSet<>();
 		permissibleMoves.addAll(permissibleMovesInDirection(board, this.coordinates, -1, 0));
 		permissibleMoves.addAll(permissibleMovesInDirection(board, this.coordinates, 1, 0));
@@ -211,14 +306,18 @@ class Castle extends GamePiece {
 		if(castlePermissible(board,this.coordinates)){
 			permissibleMoves.add(this.coordinates.add(-3, 0));
 		}
-		return permissibleMoves;
+		if(considerCheck){
+			return refinePermissibleMoves(gameBoard,this.coordinates,permissibleMoves);
+		} else{
+			return permissibleMoves;
+		}
 	}
 	
 	private boolean castlePermissible(GamePiece[][] board, Coordinates userPicked){
-		if(board[userPicked.x][userPicked.y].hasMoved == false){
+		if(board[userPicked.x][userPicked.y].hasMoved == false & this.coordinates.x == 7){
 			GamePiece gamePiece = board[userPicked.x-3][userPicked.y];
 			if(gamePiece.getClass().getSimpleName().equals("King")){
-				return ((King) board[userPicked.x-3][userPicked.y]).castlePermissible(board,userPicked.add(-3, 0));
+				return ((King) board[userPicked.x-3][userPicked.y]).castlePermissible(board);
 			}
 		}
 		return false;
@@ -230,14 +329,22 @@ class Bishop extends GamePiece {
 	public Bishop(Team team, Coordinates coordinates) {
 		super(team, coordinates);
 	}
+	public Bishop(Bishop copyBishop) {
+		super(copyBishop);
+	}
 	@Override
-	public Set<Coordinates> permissibleMoves(GamePiece[][] board) {
+	public Set<Coordinates> permissibleMoves(GameBoard gameBoard, boolean considerCheck) {
+		GamePiece[][] board = gameBoard.board;
 		Set<Coordinates> permissibleMoves = new HashSet<>();
 		permissibleMoves.addAll(permissibleMovesInDirection(board, this.coordinates, -1, 1));
 		permissibleMoves.addAll(permissibleMovesInDirection(board, this.coordinates, -1, -1));
 		permissibleMoves.addAll(permissibleMovesInDirection(board, this.coordinates, 1, -1));
 		permissibleMoves.addAll(permissibleMovesInDirection(board, this.coordinates, 1, 1));
-		return permissibleMoves;
+		if(considerCheck){
+			return refinePermissibleMoves(gameBoard,this.coordinates,permissibleMoves);
+		} else{
+			return permissibleMoves;
+		}
 	}
 	
 }
@@ -246,8 +353,12 @@ class Queen extends GamePiece {
 	public Queen(Team team, Coordinates coordinates) {
 		super(team, coordinates);
 	}
+	public Queen(Queen copyQueen) {
+		super(copyQueen);
+	}
 	@Override
-	public Set<Coordinates> permissibleMoves(GamePiece[][] board) {
+	public Set<Coordinates> permissibleMoves(GameBoard gameBoard, boolean considerCheck) {
+		GamePiece[][] board = gameBoard.board;
 		Set<Coordinates> permissibleMoves = new HashSet<>();
 		permissibleMoves.addAll(permissibleMovesInDirection(board, this.coordinates, -1, 0));
 		permissibleMoves.addAll(permissibleMovesInDirection(board, this.coordinates, 1, 0));
@@ -257,7 +368,11 @@ class Queen extends GamePiece {
 		permissibleMoves.addAll(permissibleMovesInDirection(board, this.coordinates, -1, -1));
 		permissibleMoves.addAll(permissibleMovesInDirection(board, this.coordinates, 1, -1));
 		permissibleMoves.addAll(permissibleMovesInDirection(board, this.coordinates, 1, 1));
-		return permissibleMoves;
+		if(considerCheck){
+			return refinePermissibleMoves(gameBoard,this.coordinates,permissibleMoves);
+		} else{
+			return permissibleMoves;
+		}
 	}
 	
 }
@@ -268,8 +383,11 @@ class EmptyPiece extends GamePiece {
 		super(team, coordinates);
 		this.hasMoved = true;
 	}
+	public EmptyPiece(EmptyPiece copyEmptyPiece) {
+		super(copyEmptyPiece);
+	}
 	@Override
-	public Set<Coordinates> permissibleMoves(GamePiece[][] board) {
+	public Set<Coordinates> permissibleMoves(GameBoard gameBoard, boolean considerCheck) {
 		// TODO Auto-generated method stub
 		Set<Coordinates> permissibleMoves = new HashSet<>();
 		return permissibleMoves;
@@ -278,7 +396,6 @@ class EmptyPiece extends GamePiece {
 	public char display(){
 		return ' ';
 	}
-	
-	
 }
+
 

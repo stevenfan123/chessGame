@@ -46,11 +46,11 @@ public class PawnTest extends GamePieceTest{
 		expectedPermissibleMoves4.add(new Coordinates(4,2));
 		expectedPermissibleMoves5.add(new Coordinates(5,2));
 		expectedPermissibleMoves5.add(new Coordinates(5,3));
-		Set<Coordinates> actualPermissibleMoves1 = gameBoard.board[0][1].permissibleMoves(gameBoard.board);
-		Set<Coordinates> actualPermissibleMoves2 = gameBoard.board[2][1].permissibleMoves(gameBoard.board);
-		Set<Coordinates> actualPermissibleMoves3 = gameBoard.board[3][1].permissibleMoves(gameBoard.board);
-		Set<Coordinates> actualPermissibleMoves4 = gameBoard.board[4][1].permissibleMoves(gameBoard.board);
-		Set<Coordinates> actualPermissibleMoves5 = gameBoard.board[5][1].permissibleMoves(gameBoard.board);
+		Set<Coordinates> actualPermissibleMoves1 = gameBoard.board[0][1].permissibleMoves(gameBoard);
+		Set<Coordinates> actualPermissibleMoves2 = gameBoard.board[2][1].permissibleMoves(gameBoard);
+		Set<Coordinates> actualPermissibleMoves3 = gameBoard.board[3][1].permissibleMoves(gameBoard);
+		Set<Coordinates> actualPermissibleMoves4 = gameBoard.board[4][1].permissibleMoves(gameBoard);
+		Set<Coordinates> actualPermissibleMoves5 = gameBoard.board[5][1].permissibleMoves(gameBoard);
 		assertEquals(expectedPermissibleMoves1, actualPermissibleMoves1);
 		assertEquals(expectedPermissibleMoves2, actualPermissibleMoves2);
 		assertEquals(expectedPermissibleMoves3, actualPermissibleMoves3);
@@ -89,11 +89,11 @@ public class PawnTest extends GamePieceTest{
 		expectedPermissibleMoves3.add(new Coordinates(3,3));
 		expectedPermissibleMoves4.add(new Coordinates(0,7));
 		
-		Set<Coordinates> actualPermissibleMoves1 = gameBoard.board[0][2].permissibleMoves(gameBoard.board);
-		Set<Coordinates> actualPermissibleMoves2 = gameBoard.board[2][2].permissibleMoves(gameBoard.board);
-		Set<Coordinates> actualPermissibleMoves3 = gameBoard.board[3][2].permissibleMoves(gameBoard.board);
-		Set<Coordinates> actualPermissibleMoves4 = gameBoard.board[0][6].permissibleMoves(gameBoard.board);
-		Set<Coordinates> actualPermissibleMoves5 = gameBoard.board[1][7].permissibleMoves(gameBoard.board);
+		Set<Coordinates> actualPermissibleMoves1 = gameBoard.board[0][2].permissibleMoves(gameBoard);
+		Set<Coordinates> actualPermissibleMoves2 = gameBoard.board[2][2].permissibleMoves(gameBoard);
+		Set<Coordinates> actualPermissibleMoves3 = gameBoard.board[3][2].permissibleMoves(gameBoard);
+		Set<Coordinates> actualPermissibleMoves4 = gameBoard.board[0][6].permissibleMoves(gameBoard);
+		Set<Coordinates> actualPermissibleMoves5 = gameBoard.board[1][7].permissibleMoves(gameBoard);
 
 		assertEquals(expectedPermissibleMoves1, actualPermissibleMoves1);
 		assertEquals(expectedPermissibleMoves2, actualPermissibleMoves2);
@@ -147,12 +147,12 @@ public class PawnTest extends GamePieceTest{
 		expectedPermissibleMoves4.add(new Coordinates(0,7));
 		expectedPermissibleMoves5.add(new Coordinates(7,7));
 		expectedPermissibleMoves3.add(new Coordinates(4,4));
-		Set<Coordinates> actualPermissibleMoves1 = gameBoard.board[1][2].permissibleMoves(gameBoard.board);
-		Set<Coordinates> actualPermissibleMoves2 = gameBoard.board[6][2].permissibleMoves(gameBoard.board);
-		Set<Coordinates> actualPermissibleMoves3 = gameBoard.board[4][3].permissibleMoves(gameBoard.board);
-		Set<Coordinates> actualPermissibleMoves4 = gameBoard.board[0][6].permissibleMoves(gameBoard.board);
-		Set<Coordinates> actualPermissibleMoves5 = gameBoard.board[7][6].permissibleMoves(gameBoard.board);
-		Set<Coordinates> actualPermissibleMoves6 = gameBoard.board[4][7].permissibleMoves(gameBoard.board);
+		Set<Coordinates> actualPermissibleMoves1 = gameBoard.board[1][2].permissibleMoves(gameBoard);
+		Set<Coordinates> actualPermissibleMoves2 = gameBoard.board[6][2].permissibleMoves(gameBoard);
+		Set<Coordinates> actualPermissibleMoves3 = gameBoard.board[4][3].permissibleMoves(gameBoard);
+		Set<Coordinates> actualPermissibleMoves4 = gameBoard.board[0][6].permissibleMoves(gameBoard);
+		Set<Coordinates> actualPermissibleMoves5 = gameBoard.board[7][6].permissibleMoves(gameBoard);
+		Set<Coordinates> actualPermissibleMoves6 = gameBoard.board[4][7].permissibleMoves(gameBoard);
 		assertEquals(expectedPermissibleMoves1, actualPermissibleMoves1);
 		assertEquals(expectedPermissibleMoves2, actualPermissibleMoves2);
 		assertEquals(expectedPermissibleMoves3, actualPermissibleMoves3);
