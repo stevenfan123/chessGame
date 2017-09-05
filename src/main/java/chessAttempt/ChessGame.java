@@ -15,33 +15,40 @@ public class ChessGame {
 
 	private static void playGame(GameBoard gameBoard) {
 		Team playerTurn = WHITE;
-		while (gameBoard.won() == "No") {
+		gameBoard.won = false;
+		while (gameBoard.won == false) {
 			System.out.println("It's " + playerTurn + "'s turn ");
 			Coordinates inputSelectCoords = getValidPlayerInput(gameBoard, playerTurn);
 			GamePiece selectedPiece = gameBoard.board[inputSelectCoords.x][inputSelectCoords.y];
-			long startTime = System.nanoTime();
+//			long startTime = System.nanoTime();
 			Set<Coordinates> permissibleMoves = selectedPiece.permissibleMoves(gameBoard,true);
-			long endTime = System.nanoTime();
-			long duration = (endTime-startTime)/1000000;
-			System.out.println(duration);
-			Set<Coordinates> refinedPermissibleMoves = GamePiece.refinePermissibleMoves(gameBoard, inputSelectCoords, permissibleMoves);
+//			long endTime = System.nanoTime();
+//			long duration = (endTime-startTime)/1000000;
+//			System.out.println(duration);
 			System.out.println("The possible moves for the selected piece are: ");
-			for (Coordinates move:refinedPermissibleMoves) {
+			for (Coordinates move:permissibleMoves) {
 				move.display();
 			}
 			Coordinates inputMoveCoords = getValidPlayerMove(playerTurn, permissibleMoves);	
 			gameBoard = makeMove(gameBoard, inputSelectCoords, inputMoveCoords);
-			if(playerTurn.equals(WHITE)){
-				if(gameBoard.blackKing.inCheck(gameBoard)){	
+			gameBoard.display();
+			playerTurn = changeTurn(playerTurn);
+			if(playerTurn.equals(BLACK)){
+				if(gameBoard.blackKing.inCheckMate(gameBoard)){
+					System.out.println("Checkmate! White team wins!");
+					gameBoard.won = true;
+				} else if(gameBoard.blackKing.inCheck(gameBoard)){
 					System.out.println("The black king is now in check!");
 				}
 			} else{
-				if(gameBoard.whiteKing.inCheck(gameBoard)){	
+				if(gameBoard.whiteKing.inCheckMate(gameBoard)){
+					System.out.println("Checkmate! Black team wins!");
+					gameBoard.won = true;
+				} else if(gameBoard.whiteKing.inCheck(gameBoard)){	
 					System.out.println("The white king is now in check!");
 				}
 			}
-			gameBoard.display();
-			playerTurn = changeTurn(playerTurn);
+
 		}
 
 	}

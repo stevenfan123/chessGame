@@ -235,7 +235,17 @@ class King extends GamePiece {
 		board[this.coordinates.x][this.coordinates.y] = this;
 		return false;
 	}
-
+	public boolean inCheckMate(GameBoard gameBoard){
+		for(int i = 0; i<8 ; i++){
+			for(int j = 0; j<8 ; j++){
+				GamePiece selectedPiece = gameBoard.board[i][j];
+				if(selectedPiece.team.equals(this.team) && !selectedPiece.permissibleMoves(gameBoard, true).isEmpty()){
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 }
 
 class Horse extends GamePiece {

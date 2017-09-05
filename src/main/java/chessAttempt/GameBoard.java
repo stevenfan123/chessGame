@@ -9,6 +9,7 @@ class GameBoard implements Serializable {
 	public GamePiece[][] board = new GamePiece[8][8];
 	public King whiteKing;
 	public King blackKing;
+	public boolean won;
 
 	public void display() {
 		char[] line = new char[17];
@@ -59,10 +60,7 @@ class GameBoard implements Serializable {
 		this.blackKing = (King) this.board[4][7];
 	}
 
-	public String won() {
-		// TODO Auto-generated method stub
-		return "No";
-	}
+
 	public GameBoard(GameBoard another) throws Exception{
 		this.board = new GamePiece[8][8];
 		for(int i = 0; i < 8; i++){
@@ -76,5 +74,6 @@ class GameBoard implements Serializable {
 		this.whiteKing = new King(another.whiteKing);
 		this.blackKing = new King(another.blackKing);
 	}
+
 
 }
