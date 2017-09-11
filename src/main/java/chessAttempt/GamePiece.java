@@ -4,18 +4,16 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-
+import graphicsTesting.PieceButton;
 
 import static chessAttempt.Team.*;
 
-public abstract class GamePiece implements Serializable {
+public abstract class GamePiece extends PieceButton implements Serializable {
 	public final Team team;
 	protected Coordinates coordinates;
 	public GamePiece(Team team, Coordinates coordinates){
-	
-		this.team = team;
-		this.coordinates = coordinates;
-		this.hasMoved = false;
+		super(team,this,coordinates);
+
 	}
 	
 	public GamePiece(GamePiece copyPiece){

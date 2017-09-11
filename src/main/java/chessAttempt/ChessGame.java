@@ -20,11 +20,7 @@ public class ChessGame {
 			System.out.println("It's " + playerTurn + "'s turn ");
 			Coordinates inputSelectCoords = getValidPlayerInput(gameBoard, playerTurn);
 			GamePiece selectedPiece = gameBoard.board[inputSelectCoords.x][inputSelectCoords.y];
-//			long startTime = System.nanoTime();
 			Set<Coordinates> permissibleMoves = selectedPiece.permissibleMoves(gameBoard,true);
-//			long endTime = System.nanoTime();
-//			long duration = (endTime-startTime)/1000000;
-//			System.out.println(duration);
 			System.out.println("The possible moves for the selected piece are: ");
 			for (Coordinates move:permissibleMoves) {
 				move.display();
