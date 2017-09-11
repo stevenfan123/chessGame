@@ -66,9 +66,9 @@ public class BishopTest extends GamePieceTest {
 		expectedPermissibleMoves3.add(new Coordinates(6,0));
 		
 
-		Set<Coordinates> actualPermissibleMoves1 = gameBoard.board[2][2].permissibleMoves(gameBoard);
-		Set<Coordinates> actualPermissibleMoves2 = gameBoard.board[3][2].permissibleMoves(gameBoard);
-		Set<Coordinates> actualPermissibleMoves3 = gameBoard.board[4][2].permissibleMoves(gameBoard);
+		Set<Coordinates> actualPermissibleMoves1 = gameBoard.board[2][2].permissibleMoves(gameBoard,true);
+		Set<Coordinates> actualPermissibleMoves2 = gameBoard.board[3][2].permissibleMoves(gameBoard,true);
+		Set<Coordinates> actualPermissibleMoves3 = gameBoard.board[4][2].permissibleMoves(gameBoard,true);
 
 
 		assertEquals(expectedPermissibleMoves1, actualPermissibleMoves1);

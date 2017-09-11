@@ -3,9 +3,12 @@ package chessAttempt;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
+
+
 import static chessAttempt.Team.*;
 
-abstract class GamePiece implements Serializable {
+public abstract class GamePiece implements Serializable {
 	public final Team team;
 	protected Coordinates coordinates;
 	public GamePiece(Team team, Coordinates coordinates){

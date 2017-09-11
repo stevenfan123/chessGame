@@ -80,14 +80,14 @@ public class HorseTest extends GamePieceTest{
 		expectedPermissibleMoves8.add(new Coordinates(5,3));
 		expectedPermissibleMoves8.add(new Coordinates(7,3));
 
-		Set<Coordinates> actualPermissibleMoves1 = gameBoard.board[0][0].permissibleMoves(gameBoard);
-		Set<Coordinates> actualPermissibleMoves2 = gameBoard.board[0][7].permissibleMoves(gameBoard);
-		Set<Coordinates> actualPermissibleMoves3 = gameBoard.board[7][7].permissibleMoves(gameBoard);
-		Set<Coordinates> actualPermissibleMoves4 = gameBoard.board[7][0].permissibleMoves(gameBoard);
-		Set<Coordinates> actualPermissibleMoves5 = gameBoard.board[1][1].permissibleMoves(gameBoard);
-		Set<Coordinates> actualPermissibleMoves6 = gameBoard.board[1][6].permissibleMoves(gameBoard);
-		Set<Coordinates> actualPermissibleMoves7 = gameBoard.board[6][6].permissibleMoves(gameBoard);
-		Set<Coordinates> actualPermissibleMoves8 = gameBoard.board[6][1].permissibleMoves(gameBoard);
+		Set<Coordinates> actualPermissibleMoves1 = gameBoard.board[0][0].permissibleMoves(gameBoard,true);
+		Set<Coordinates> actualPermissibleMoves2 = gameBoard.board[0][7].permissibleMoves(gameBoard,true);
+		Set<Coordinates> actualPermissibleMoves3 = gameBoard.board[7][7].permissibleMoves(gameBoard,true);
+		Set<Coordinates> actualPermissibleMoves4 = gameBoard.board[7][0].permissibleMoves(gameBoard,true);
+		Set<Coordinates> actualPermissibleMoves5 = gameBoard.board[1][1].permissibleMoves(gameBoard,true);
+		Set<Coordinates> actualPermissibleMoves6 = gameBoard.board[1][6].permissibleMoves(gameBoard,true);
+		Set<Coordinates> actualPermissibleMoves7 = gameBoard.board[6][6].permissibleMoves(gameBoard,true);
+		Set<Coordinates> actualPermissibleMoves8 = gameBoard.board[6][1].permissibleMoves(gameBoard,true);
 
 		assertEquals(expectedPermissibleMoves1, actualPermissibleMoves1);
 		assertEquals(expectedPermissibleMoves2, actualPermissibleMoves2);
@@ -114,7 +114,7 @@ public class HorseTest extends GamePieceTest{
 		gameBoard.board[1][4] = new Pawn(WHITE, new Coordinates(1,4));
 		
 		Set<Coordinates> expectedPermissibleMoves1 = new HashSet<Coordinates>(); 
-		Set<Coordinates> actualPermissibleMoves1 = gameBoard.board[2][2].permissibleMoves(gameBoard);
+		Set<Coordinates> actualPermissibleMoves1 = gameBoard.board[2][2].permissibleMoves(gameBoard,true);
 		assertEquals(expectedPermissibleMoves1, actualPermissibleMoves1);
 		
 	}
@@ -142,7 +142,7 @@ public class HorseTest extends GamePieceTest{
 		expectedPermissibleMoves1.add(new Coordinates(0,3));
 		expectedPermissibleMoves1.add(new Coordinates(1,4));
 
-		Set<Coordinates> actualPermissibleMoves1 = gameBoard.board[2][2].permissibleMoves(gameBoard);
+		Set<Coordinates> actualPermissibleMoves1 = gameBoard.board[2][2].permissibleMoves(gameBoard,true);
 		assertEquals(expectedPermissibleMoves1, actualPermissibleMoves1);
 		
 	}
@@ -163,7 +163,7 @@ public class HorseTest extends GamePieceTest{
 		expectedPermissibleMoves1.add(new Coordinates(0,3));
 		expectedPermissibleMoves1.add(new Coordinates(1,4));
 
-		Set<Coordinates> actualPermissibleMoves1 = gameBoard.board[2][2].permissibleMoves(gameBoard);
+		Set<Coordinates> actualPermissibleMoves1 = gameBoard.board[2][2].permissibleMoves(gameBoard,true);
 		assertEquals(expectedPermissibleMoves1, actualPermissibleMoves1);
 		
 	}
